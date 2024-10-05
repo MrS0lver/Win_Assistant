@@ -1,6 +1,6 @@
 from tkinter import *
-from PIL import Image, ImageTk
-import webbrowser
+# from PIL import Image, ImageTk
+# import webbrowser
 import shutil
 import os
 import sys
@@ -53,22 +53,22 @@ class Main:
         #                       command=lambda: webbrowser.open("https://x.com/Mrs0lver"))
         # self.twitter.grid(column=1, row=0, padx=2, pady=2)
 
-        # YouTube
-        image = Image.open("youtube.png")
-        resized_image1 = image.resize((50, 50), Image.LANCZOS)
-        self.youtube_img = ImageTk.PhotoImage(resized_image1)
+        # # YouTube
+        # image = Image.open("youtube.png")
+        # resized_image1 = image.resize((50, 50), Image.LANCZOS)
+        # self.youtube_img = ImageTk.PhotoImage(resized_image1)
         
-        self.youtube = Button(self.frame_1, text="YouTube", bg="lightgrey", image=self.youtube_img, bd=0, 
-                              command=lambda: webbrowser.open("https://www.youtube.com/@Mrs0lver"))
-        self.youtube.grid(column=2, row=0, padx=2, pady=2)
+        # self.youtube = Button(self.frame_1, text="YouTube", bg="lightgrey", image=self.youtube_img, bd=0, 
+        #                       command=lambda: webbrowser.open("https://www.youtube.com/@Mrs0lver"))
+        # self.youtube.grid(column=2, row=0, padx=2, pady=2)
 
-        # GitHub 
-        image = Image.open("github.png")
-        resized_image2 = image.resize((60, 60), Image.LANCZOS)
-        self.github_img = ImageTk.PhotoImage(resized_image2)
+        # # GitHub 
+        # image = Image.open("github.png")
+        # resized_image2 = image.resize((60, 60), Image.LANCZOS)
+        # self.github_img = ImageTk.PhotoImage(resized_image2)
         
-        self.github = Button(self.frame_1, text="GitHub", bg="lightgrey", image=self.github_img, bd=0, command=lambda: webbrowser.open("https://github.com/MrS0lver"))
-        self.github.grid(column=3, row=0, padx=2, pady=2)
+        # self.github = Button(self.frame_1, text="GitHub", bg="lightgrey", image=self.github_img, bd=0, command=lambda: webbrowser.open("https://github.com/MrS0lver"))
+        # self.github.grid(column=3, row=0, padx=2, pady=2)
 
         self.button = Button(self.root, text="Initilize", font="Georgia 20", bd=2, relief=GROOVE, bg="lightcyan", command=self.initilize)
         self.button.pack()
