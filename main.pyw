@@ -119,6 +119,7 @@ class Main:
                 # Start listening for the name in the background
                 # tr.Thread(target=self.background_listen,daemon=True).start()
                 self.background_listen()
+                self.root.destroy()
             except Exception as e:
                 print("Something is Wrong Inside!")
                 print(e)
