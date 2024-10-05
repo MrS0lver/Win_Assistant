@@ -91,7 +91,7 @@ class Main:
         while True:
             listening = self.listen()  # Capture speech and convert to lowercase
             if call_name in listening:
-                self.say(f"Hi {self.name}, Nice To Meet You!, How Can I help you Today!")
+                self.say(f"Hi {self.name.get()}, Nice To Meet You!, How Can I help you Today!")
 
 
 
