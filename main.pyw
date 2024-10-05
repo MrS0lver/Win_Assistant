@@ -44,14 +44,14 @@ class Main:
         self.tell = Label(self.frame_1, text="Follow Me On :", font="cambria 20", bg="lightgrey")
         self.tell.grid(column=0, row=0, padx=1, pady=1)
 
-        # Twitter
-        image = Image.open("twitter.png")
-        resized_image0 = image.resize((50, 50), Image.LANCZOS)
-        self.twitter_img = ImageTk.PhotoImage(resized_image0)
+        # # Twitter
+        # image = Image.open("twitter.png")
+        # resized_image0 = image.resize((50, 50), Image.LANCZOS)
+        # self.twitter_img = ImageTk.PhotoImage(resized_image0)
         
-        self.twitter = Button(self.frame_1, text="Twitter", bg="lightgrey", image=self.twitter_img, bd=0, 
-                              command=lambda: webbrowser.open("https://x.com/Mrs0lver"))
-        self.twitter.grid(column=1, row=0, padx=2, pady=2)
+        # self.twitter = Button(self.frame_1, text="Twitter", bg="lightgrey", image=self.twitter_img, bd=0, 
+        #                       command=lambda: webbrowser.open("https://x.com/Mrs0lver"))
+        # self.twitter.grid(column=1, row=0, padx=2, pady=2)
 
         # YouTube
         image = Image.open("youtube.png")
