@@ -7,7 +7,7 @@ import speech_recognition as sr
 import threading as tr
 from tkinter import messagebox
 from AppOpener import open
-import requests 
+import requests as rq 
 
 class Main:
     def say(self, x):
@@ -41,20 +41,25 @@ class Main:
         self.button.pack()
 
     def listen(self):
-        rec = sr.Recognizer()
-        with sr.Microphone() as source:
-            print("Listening...")
-            rec.adjust_for_ambient_noise(source)
-            audio = rec.listen(source)
-            try:
-                print("Recognizing...")
-                data = rec.recognize_google(audio)
-                print(data)
-                return data.lower() 
-            except Exception as e:
-                print("SOMETHING WENT WRONG!!!")
-                return ""  
-
+        url = "https://www.google.com"
+        resp = rq.get(url)
+        if resp.status_code == 200:
+            rec = sr.Recognizer()
+            with sr.Microphone() as source:
+                print("Listening...")
+                rec.adjust_for_ambient_noise(source)
+                audio = rec.listen(source)
+                try:
+                    print("Recognizing...")
+                    data = rec.recognize_google(audio)
+                    print(data)
+                    return data.lower() 
+                except Exception as e:
+                    print("SOMETHING WENT WRONG!!!")
+                    return ""  
+        else:
+            print("No Internet Connection!!!")
+            pass
     def background_listen(self):
         call_name = self.nick_name.get().lower()  
         while True:
@@ -62,16 +67,34 @@ class Main:
             if call_name in listening:  
                 self.say(f"Hi {self.name.get()}, Nice To Meet You! How Can I help you today!")
                 self.listen_for_commands()  #Greeting
+            else:
+                pass
+            # while True:
+            #     listening = self.listen()  #Listening ...
+            # if "whatsapp" in listening:
+            #     self.say("Got it Sir!! Opening WhatsApp now.")
+            #     open("WhatsApp")
+                
+            # else:
+            #     print("Command not recognized, continue listening...")  
+
 
     def listen_for_commands(self):
+        # self.say(f"Hi {self.name.get()}, Nice To Meet You! How Can I help you today!")
         while True:
             listening = self.listen()  #Listening ...
-            if "whatsapp" in listening:
+            if "whatsapp" or "whatsapp"  in listening:
                 self.say("Got it Sir!! Opening WhatsApp now.")
                 open("WhatsApp")
-                
+            elif "vs code" or "Vs code" in listening:
+                try:
+                    self.say("Got it Sir!! Opening Vs code.")
+                    open("Vs code")
+                except Exception as e:
+                    self.say(f"Sorry {self.name.get()} Vs code is not avaibale in your Computer !")
             else:
                 print("Command not recognized, continue listening...")  
+
     def initialize(self):
         if not self.name.get().strip() or not self.nick_name.get().strip():
             messagebox.showerror("Input Error", "Name and Nickname cannot be empty!")  
@@ -93,7 +116,8 @@ class Main:
                 print("File Copied Successfully")
                 self.button.config(text="Initialized!")
                 self.say(f"Hello, My name is {self.nick_name.get()}, Program Initialized successfully!")
-                tr.Thread(target=self.background_listen, daemon=True).start()  
+                # tr.Thread(target=self.background_listen, daemon=True).start()  
+                self.background_listen()
             except Exception as e:
                 print("Something is Wrong Inside!")
                 print(e)
