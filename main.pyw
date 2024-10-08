@@ -12,7 +12,7 @@ import requests
 class Main:
     def say(self, x):
         self.engine = pyttsx3.init()
-        self.engine.setProperty("rate", 155)
+        self.engine.setProperty("rate", 145)
         self.engine.say(x)
         self.engine.runAndWait()
 
