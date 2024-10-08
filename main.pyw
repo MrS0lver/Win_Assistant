@@ -1,6 +1,4 @@
 from tkinter import *
-# from PIL import Image, ImageTk
-# import webbrowser
 import shutil
 import os
 import sys
@@ -8,21 +6,21 @@ import pyttsx3
 import speech_recognition as sr
 import threading as tr
 from tkinter import messagebox
+from AppOpener import open
 
 class Main:
     def say(self, x):
         self.engine = pyttsx3.init()
-        self.engine.getProperty("rate")
         self.engine.setProperty("rate", 155)
         self.engine.say(x)
         self.engine.runAndWait()
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Login .")
+        self.root.title("Login")
         self.root.geometry("500x400")
 
-        self.intro = Label(self.root, text=" Let's Start ", font="cambria 25", bg="lightgrey", relief=RIDGE)
+        self.intro = Label(self.root, text="Let's Start", font="cambria 25", bg="lightgrey", relief=RIDGE)
         self.intro.pack(fill=BOTH, pady=10)
 
         self.frame = Frame(self.root, relief=RAISED)
@@ -38,39 +36,7 @@ class Main:
         self.nick_name = Entry(self.frame, font="consolas 15", bd=0, width=15, bg="lightgrey")
         self.nick_name.grid(row=1, column=1, padx=3, pady=1)
 
-        self.frame_1 = Frame(self.root, relief=RAISED, bg="lightgrey")
-        self.frame_1.pack(side=BOTTOM, fill=BOTH)
-
-        self.tell = Label(self.frame_1, text="Follow Me On :", font="cambria 20", bg="lightgrey")
-        self.tell.grid(column=0, row=0, padx=1, pady=1)
-
-        # # Twitter
-        # image = Image.open("twitter.png")
-        # resized_image0 = image.resize((50, 50), Image.LANCZOS)
-        # self.twitter_img = ImageTk.PhotoImage(resized_image0)
-        
-        # self.twitter = Button(self.frame_1, text="Twitter", bg="lightgrey", image=self.twitter_img, bd=0, 
-        #                       command=lambda: webbrowser.open("https://x.com/Mrs0lver"))
-        # self.twitter.grid(column=1, row=0, padx=2, pady=2)
-
-        # # YouTube
-        # image = Image.open("youtube.png")
-        # resized_image1 = image.resize((50, 50), Image.LANCZOS)
-        # self.youtube_img = ImageTk.PhotoImage(resized_image1)
-        
-        # self.youtube = Button(self.frame_1, text="YouTube", bg="lightgrey", image=self.youtube_img, bd=0, 
-        #                       command=lambda: webbrowser.open("https://www.youtube.com/@Mrs0lver"))
-        # self.youtube.grid(column=2, row=0, padx=2, pady=2)
-
-        # # GitHub 
-        # image = Image.open("github.png")
-        # resized_image2 = image.resize((60, 60), Image.LANCZOS)
-        # self.github_img = ImageTk.PhotoImage(resized_image2)
-        
-        # self.github = Button(self.frame_1, text="GitHub", bg="lightgrey", image=self.github_img, bd=0, command=lambda: webbrowser.open("https://github.com/MrS0lver"))
-        # self.github.grid(column=3, row=0, padx=2, pady=2)
-
-        self.button = Button(self.root, text="Initilize", font="Georgia 20", bd=2, relief=GROOVE, bg="lightcyan", command=self.initilize)
+        self.button = Button(self.root, text="Initialize", font="Georgia 20", bd=2, relief=GROOVE, bg="lightcyan", command=self.initialize)
         self.button.pack()
 
     def listen(self):
@@ -83,26 +49,37 @@ class Main:
                 print("Recognizing...")
                 data = rec.recognize_google(audio)
                 print(data)
-                return data
+                return data.lower()  # Return data in lowercase for consistency
             except Exception as e:
                 print("SOMETHING WENT WRONG!!!")
+                return ""  # Return empty string on failure
+
     def background_listen(self):
-        call_name = self.nick_name.get().title() # Lowercase to handle case insensitivity
+        call_name = self.nick_name.get().lower()  # Get nickname in lowercase
         while True:
-            listening = self.listen()  # Capture speech and convert to lowercase
-            if call_name in listening:
-                self.say(f"Hi {self.name.get()}, Nice To Meet You!, How Can I help you Today!")
+            listening = self.listen()  # Capture speech
+            if call_name in listening:  # Check if the call name is detected
+                self.say(f"Hi {self.name.get()}, Nice To Meet You! How Can I help you today!")
+                self.listen_for_commands()  # Start listening for commands after the greeting
 
+    def listen_for_commands(self):
+        while True:
+            listening = self.listen()  # Listen for commands
+            if "whatsapp" in listening:
+                self.say("Got it Sir!! Opening WhatsApp now.")
+                open("WhatsApp")
+                # You can add more commands here
+            else:
+                print("Command not recognized, continue listening...")  # Optional debug output
 
-
-    def initilize(self):
+    def initialize(self):
         if not self.name.get().strip() or not self.nick_name.get().strip():
             messagebox.showerror("Input Error", "Name and Nickname cannot be empty!")  # Show error message
-         # Exit the method to avoid further execution
+            return  # Exit the method to avoid further execution
         else:
-            tr.Thread(target=self.inilize, daemon=True).start()  # Fix spelling to match the function name
+            tr.Thread(target=self.initialize_app, daemon=True).start()  # Start the initialization in a separate thread
 
-    def inilize(self):
+    def initialize_app(self):
         current_script_path = sys.argv[0]
         startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
         destination = os.path.join(startup_folder, os.path.basename(current_script_path))
@@ -116,14 +93,10 @@ class Main:
                 print("File Copied Successfully")
                 self.button.config(text="Initialized!")
                 self.say(f"Hello, My name is {self.nick_name.get()}, Program Initialized successfully!")
-                # Start listening for the name in the background
-                # tr.Thread(target=self.background_listen,daemon=True).start()
-                self.background_listen()
-                self.root.destroy()
+                tr.Thread(target=self.background_listen, daemon=True).start()  # Start the background listener
             except Exception as e:
                 print("Something is Wrong Inside!")
                 print(e)
-
 
 if __name__ == "__main__":
     win = Tk()
