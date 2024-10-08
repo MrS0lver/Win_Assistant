@@ -8,6 +8,7 @@ import threading as tr
 from tkinter import messagebox
 from AppOpener import open
 import requests as rq 
+import time 
 
 class Main:
     def say(self, x):
@@ -84,14 +85,23 @@ class Main:
         while True:
             listening = self.listen()  #Listening ...
             if "whatsapp" or "whatsapp"  in listening:
-                self.say("Got it Sir!! Opening WhatsApp now.")
-                open("WhatsApp")
-            elif "vs code" or "Vs code" in listening:
                 try:
-                    self.say("Got it Sir!! Opening Vs code.")
-                    open("Vs code")
+                    self.say("Got it Sir!! Opening WhatsApp now.")
+                    open("WhatsApp")
                 except Exception as e:
-                    self.say(f"Sorry {self.name.get()} Vs code is not avaibale in your Computer !")
+                    self.say("WHatsapp is not available in your computer!")
+            # elif "vscode" or "Vscode" in listening:
+            #     try:
+            #         self.say("Got it Sir!! Opening Vs code.")
+            #         open("Visual Studio Code")
+            #     except Exception as e:
+            #         self.say(f"Sorry {self.name.get()} Vs code is not avaibale in your Computer !")
+            elif "time" in listening:
+                try:
+                    self.say(f"The Time is {time.strftime("%I")}{time.strftime("%M")}{time.strftime("%p")}")
+                except EXCEPTION as e:
+                    pass
+
             else:
                 print("Command not recognized, continue listening...")  
 
