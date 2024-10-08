@@ -7,6 +7,7 @@ import speech_recognition as sr
 import threading as tr
 from tkinter import messagebox
 from AppOpener import open
+import requests 
 
 class Main:
     def say(self, x):
@@ -49,35 +50,34 @@ class Main:
                 print("Recognizing...")
                 data = rec.recognize_google(audio)
                 print(data)
-                return data.lower()  # Return data in lowercase for consistency
+                return data.lower() 
             except Exception as e:
                 print("SOMETHING WENT WRONG!!!")
-                return ""  # Return empty string on failure
+                return ""  
 
     def background_listen(self):
-        call_name = self.nick_name.get().lower()  # Get nickname in lowercase
+        call_name = self.nick_name.get().lower()  
         while True:
-            listening = self.listen()  # Capture speech
-            if call_name in listening:  # Check if the call name is detected
+            listening = self.listen()  
+            if call_name in listening:  
                 self.say(f"Hi {self.name.get()}, Nice To Meet You! How Can I help you today!")
-                self.listen_for_commands()  # Start listening for commands after the greeting
+                self.listen_for_commands()  #Greeting
 
     def listen_for_commands(self):
         while True:
-            listening = self.listen()  # Listen for commands
+            listening = self.listen()  #Listening ...
             if "whatsapp" in listening:
                 self.say("Got it Sir!! Opening WhatsApp now.")
                 open("WhatsApp")
-                # You can add more commands here
+                
             else:
-                print("Command not recognized, continue listening...")  # Optional debug output
-
+                print("Command not recognized, continue listening...")  
     def initialize(self):
         if not self.name.get().strip() or not self.nick_name.get().strip():
-            messagebox.showerror("Input Error", "Name and Nickname cannot be empty!")  # Show error message
-            return  # Exit the method to avoid further execution
+            messagebox.showerror("Input Error", "Name and Nickname cannot be empty!")  
+            return  
         else:
-            tr.Thread(target=self.initialize_app, daemon=True).start()  # Start the initialization in a separate thread
+            tr.Thread(target=self.initialize_app, daemon=True).start()  
 
     def initialize_app(self):
         current_script_path = sys.argv[0]
@@ -93,7 +93,7 @@ class Main:
                 print("File Copied Successfully")
                 self.button.config(text="Initialized!")
                 self.say(f"Hello, My name is {self.nick_name.get()}, Program Initialized successfully!")
-                tr.Thread(target=self.background_listen, daemon=True).start()  # Start the background listener
+                tr.Thread(target=self.background_listen, daemon=True).start()  
             except Exception as e:
                 print("Something is Wrong Inside!")
                 print(e)
