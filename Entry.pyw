@@ -37,15 +37,16 @@ class Main:
         self.button = Button(self.root, text="Initialize", font="Georgia 20", bd=2, relief=GROOVE, bg="lightcyan", command=self.initialize)
         self.button.pack()
     def store_info(self):
-        data = {"User_name":self.name.get(),"Assist_name":self.nick_name.get()}
-        with open("info.txt","wb") as file:
-            pickle.dump(data,file)
+        data_info = {
+            "User_name": self.name.get(),
+            "Assist_name": self.nick_name.get()
+        }
+    
+        # Store data using pickle
+        with open("info.txt", "wb") as file:
+            pickle.dump(data_info, file)
+            print("Information saved successfully!")
             
-    # def use_info(self):
-    #     with open("info.txt","rb") as file:
-    #         data = pickle.load(file)
-    #         return data["User_name"],data["Assist_name"]
-        
     def initialize(self):
         if not self.name.get().strip() or not self.nick_name.get().strip():
             messagebox.showerror("Input Error", "Name and Nickname cannot be empty!")  
@@ -65,8 +66,12 @@ class Main:
                 self.store_info()
                 self.button.config(text="Initialized!")
                 self.say(f"Hello, My name is {self.nick_name.get()}, Program Initialized successfully!")
-                # tr.Thread(target=self.background_listen, daemon=True).start()  
-                subprocess.Popen(["pythonw", "background.pyw"])
+                try:
+                    subprocess.Popen([sys.executable, os.path.join(os.path.dirname(__file__), "background.pyw")])
+                    # subprocess.Popen([sys.executable, "background.pyw"])
+                    print("Background script started successfully.")
+                except Exception as e:
+                    print(f"Error starting background script: {e}")
                 self.root.destroy()
             except Exception as e:
                 print("Something is Wrong Inside!")
@@ -76,4 +81,3 @@ if __name__ == "__main__":
     win = Tk()
     obj = Main(win)
     win.mainloop()
-
