@@ -15,7 +15,7 @@ class Main:
                 print("Data loaded successfully:", self.data)
             except Exception as e:
                 print(f"Error loading file: {e}")
-                self.data = None
+                # self.data = None
         else:
             print("File Not Exist!!")
 
@@ -53,7 +53,7 @@ class Main:
     def background_listen(self):
         if self.data:
             self.say("I am running sir")
-            call_name = self.data["Assist_name"].lower()
+            call_name = self.data["Assist_name"]
             while True:
                 listening = self.listen()
                 if call_name in listening:
